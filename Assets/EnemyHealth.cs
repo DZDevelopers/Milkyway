@@ -5,11 +5,10 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private int health;
-    [SerializeField] private Fighting player;
     // Start is called before the first frame update
     void Start()
     {
-        
+        health = 10;
     }
 
     // Update is called once per frame
@@ -17,12 +16,17 @@ public class EnemyHealth : MonoBehaviour
     {
         
     }
-    void EnemyDamageTaken()
+    public void TakeDamage(int damage)
     {
-        health -= player.playerDamage;
+        health -= damage;
         if (health <= 0)
         {
-            GameObject.Destroy(this);
+            Die();
         }
     }
+    void Die()
+    {
+        Destroy(gameObject);
+    }
+    
 }

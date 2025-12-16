@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Fighting : MonoBehaviour
 {
-    [SerializeField] private BoxCollider2D attackBox;
+    public BoxCollider2D attackBox;
     [SerializeField] private Animator anime;
+    [SerializeField] private LayerMask enemyLayer;
+    public int playerHealth = 100;
+
     // Start is called before the first frame update
     void Start()
     {
         attackBox.enabled = false; 
+        playerHealth = 100;
+
     }
 
     // Update is called once per frame
@@ -19,18 +24,24 @@ public class Fighting : MonoBehaviour
         {
             Attack();
         }
-            
     }
+    
     void Attack()
     {
         attackBox.enabled = true;
         anime.SetBool("IsAttacking",true);
-        Debug.Log("attacked");
     }
     void SAttack()
     {
         attackBox.enabled = false;
         anime.SetBool("IsAttacking",false);
-        Debug.Log("Sattacked");
+    }
+    public void PlayerDamageTaken(int Enemydamage)
+    {
+        playerHealth -= Enemydamage;
+        if (playerHealth <= 0)
+        {
+            Debug.Log("Player died");
+        }
     }
 }
