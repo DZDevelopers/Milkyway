@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
     [SerializeField]private float cyoteTime = 0.15f;
     [SerializeField]private float jumpBufferTime = 0.5f;
     [SerializeField]private Animator anime;
+    private bool isCrouching;
     private int facingDir = 1;
     private float jumpBufferCounter;
 
@@ -19,6 +20,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        isCrouching = false;
     }
 
     void Update()
@@ -63,6 +65,7 @@ public class Movement : MonoBehaviour
         }
         anime.SetFloat("Horizontal", Math.Abs(Input.GetAxis("Horizontal")));
         anime.SetFloat("Vertical", _rb.velocity.y);
+        Crouch();
   
     }
     void Jump()
@@ -74,6 +77,23 @@ public class Movement : MonoBehaviour
     {
         facingDir *= -1;
         transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
+    }
+    void Crouch()
+    {
+        if(Input.GetKey(KeyCode.LeftControl))
+        {
+            if (isCrouching) return; 
+            isCrouching = true;
+            anime.SetBool("IsCrouched",true);
+            speed /= 2;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            if (!isCrouching) return;
+            isCrouching = false;
+            anime.SetBool("IsCrouched", false);
+            speed *= 2;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
