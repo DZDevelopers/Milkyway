@@ -26,10 +26,11 @@ public class AttackBox : MonoBehaviour
     Debug.Log("Hit: " + collision.name);
 
     EnemyHealth enemy = collision.GetComponent<EnemyHealth>();
-    if (enemy != null)
+    if (enemy != null && hasHit == false)
     {
         Debug.Log("Enemy damaged");
         enemy.TakeDamage(playerDamage);
+        hasHit = true;
     }
 }
 }

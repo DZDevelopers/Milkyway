@@ -9,12 +9,14 @@ public class Movement : MonoBehaviour
     [SerializeField]private float jumpStrength = 5f;
     [SerializeField]private float cyoteTime = 0.15f;
     [SerializeField]private float jumpBufferTime = 0.5f;
+    [SerializeField]private float dashColdawn = 2f;
+    [SerializeField]private float dashDistance = 50f;
     [SerializeField]private Animator anime;
     private bool isCrouching;
     private int facingDir = 1;
     private float jumpBufferCounter;
-
     private float cyoteTimeCounter;
+    private float dashColdawnCounter;
     private bool isGrounded;
 
     void Start()
@@ -66,6 +68,7 @@ public class Movement : MonoBehaviour
         anime.SetFloat("Horizontal", Math.Abs(Input.GetAxis("Horizontal")));
         anime.SetFloat("Vertical", _rb.velocity.y);
         Crouch();
+        Dash();
   
     }
     void Jump()
@@ -94,6 +97,20 @@ public class Movement : MonoBehaviour
             anime.SetBool("IsCrouched", false);
             speed *= 2;
         }
+    }
+    void Dash()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashColdawnCounter <= 0)
+        {
+            anime.SetBool("IsDashing", true);
+            _rb.velocity = new Vector2(dashDistance * facingDir, _rb.velocity.y);
+            dashColdawnCounter = dashColdawn;
+        }
+        dashColdawnCounter -= Time.deltaTime;
+    }
+    void SDash()
+    {
+        anime.SetBool("IsDashing", false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
