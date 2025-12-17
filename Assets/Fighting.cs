@@ -8,6 +8,7 @@ public class Fighting : MonoBehaviour
     [SerializeField] private Animator anime;
     [SerializeField] private LayerMask enemyLayer;
     public int playerHealth = 100;
+    private bool playerDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,16 @@ public class Fighting : MonoBehaviour
         {
             Attack();
         }
+        if (playerHealth <= 0)
+        {
+            if (!playerDead)
+            {
+            anime.SetBool("Died", true);
+            playerDead = true;
+            }
+            Invoke(nameof(SDied),1f);
+            Invoke(nameof(Destroy),5f);
+        }
     }
     
     void Attack()
@@ -36,12 +47,26 @@ public class Fighting : MonoBehaviour
         attackBox.enabled = false;
         anime.SetBool("IsAttacking",false);
     }
+    void Destroy()
+    {
+        Destroy(gameObject);
+    }
+    void SDied()
+    {
+        anime.SetBool("Died", false);
+    }
     public void PlayerDamageTaken(int Enemydamage)
     {
         playerHealth -= Enemydamage;
         if (playerHealth <= 0)
         {
             Debug.Log("Player died");
+            if (!playerDead)
+            {
+            anime.SetBool("Died", true);
+            playerDead = true;
+            Invoke(nameof(Destroy),5f);
+            }
         }
     }
 }
