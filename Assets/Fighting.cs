@@ -5,6 +5,7 @@ using UnityEngine;
 public class Fighting : MonoBehaviour
 {
     public BoxCollider2D attackBox;
+    public BoxCollider2D hitBox;
     [SerializeField] private Animator anime;
     [SerializeField] private LayerMask enemyLayer;
     public int playerHealth = 100;
@@ -25,16 +26,6 @@ public class Fighting : MonoBehaviour
         {
             Attack();
         }
-        if (playerHealth <= 0)
-        {
-            if (!playerDead)
-            {
-            anime.SetBool("Died", true);
-            playerDead = true;
-            }
-            Invoke(nameof(SDied),1f);
-            Invoke(nameof(Destroy),5f);
-        }
     }
     
     void Attack()
@@ -47,7 +38,7 @@ public class Fighting : MonoBehaviour
         attackBox.enabled = false;
         anime.SetBool("IsAttacking",false);
     }
-    void Destroy()
+    void PDestroy()
     {
         Destroy(gameObject);
     }
@@ -60,13 +51,15 @@ public class Fighting : MonoBehaviour
         playerHealth -= Enemydamage;
         if (playerHealth <= 0)
         {
-            Debug.Log("Player died");
             if (!playerDead)
             {
             anime.SetBool("Died", true);
             playerDead = true;
-            Invoke(nameof(Destroy),5f);
+            Vector2 newSize = new Vector2(hitBox.size.x, 0.22f);
+            hitBox.size = newSize;
             }
+            Invoke(nameof(SDied),1f);
+            Invoke(nameof(PDestroy),5f);
         }
     }
 }
