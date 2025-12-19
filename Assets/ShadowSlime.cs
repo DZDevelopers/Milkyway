@@ -14,6 +14,7 @@ public class ShadowSlime : MonoBehaviour
 
     private bool playerisinfront;
     private Rigidbody2D rb;
+    public bool isBiengKnocked;
     private int direction = 1; // 1 = right, -1 = left
 
     void Start()
@@ -23,6 +24,10 @@ public class ShadowSlime : MonoBehaviour
 
     void Update()
     {
+        if (isBiengKnocked)
+        {
+            return;
+        }
         PlayerInFront();
         if (playerisinfront)
         {

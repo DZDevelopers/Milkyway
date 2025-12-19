@@ -19,6 +19,7 @@ public class Movement : MonoBehaviour
     private float dashColdawnCounter;
     private bool isGrounded;
 
+
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
