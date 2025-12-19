@@ -21,12 +21,18 @@ public class AttackBox : MonoBehaviour
     {
         
     }
+    IEnumerator ResetKnockback(ShadowSlime shadow, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        shadow.isBiengKnocked = false;
+    }
     void OnTriggerEnter2D(Collider2D collision)
-{
+    {
     Debug.Log("Hit: " + collision.name);
     Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
     EnemyHealth enemy = collision.GetComponent<EnemyHealth>();
     ShadowSlime shadow = collision.GetComponent<ShadowSlime>();
+
     if (rb.position.x > transform.position.x)
     {  
        enemyDir = +1;
@@ -43,6 +49,7 @@ public class AttackBox : MonoBehaviour
         shadow.isBiengKnocked = true;
         Vector2 knockDir = new Vector2(enemyDir * knockbackForce,verticalKnockForce);
         rb.AddForce(knockDir,ForceMode2D.Impulse);
+        StartCoroutine(ResetKnockback(shadow, 1f));
     }
-}
+    }
 }
