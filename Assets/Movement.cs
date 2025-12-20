@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 
@@ -18,12 +20,14 @@ public class Movement : MonoBehaviour
     private float cyoteTimeCounter;
     private float dashColdawnCounter;
     private bool isGrounded;
+    private bool isFalling;
+    private float timeInAir;
 
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        isCrouching = false;
+        anime.SetBool("IsFalling", true);
     }
 
     void Update()
@@ -117,12 +121,25 @@ public class Movement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
-            isGrounded = true;
+        {
+        isGrounded = true;
+        isFalling = false;
+        timeInAir = 0f;
+        anime.SetBool("IsFalling", false);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
+        {
             isGrounded = false;
+            timeInAir += Time.deltaTime;
+            if (timeInAir > 2.5f)
+            {
+                isFalling = true;
+                anime.SetBool("IsFalling", true);
+            }
+        }
     }
 }
