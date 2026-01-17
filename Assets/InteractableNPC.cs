@@ -3,9 +3,13 @@ using Unity;
 
 public class InteractableNPC : MonoBehaviour
 {
-    [SerializeField] private string npcName;
     [SerializeField] private string npcDialogue;
     private bool PlayerInRange = false;
+
+    void Update()
+    {
+        Interact();
+    }
     public void Interact()
     {
         if (PlayerInRange && Input.GetKeyDown(KeyCode.E))
