@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "The-Hero-Knight.sln"
+    "dotnet.defaultSolution": "Milkyway.sln"
 }
