@@ -4390,6 +4390,7 @@ MonoBehaviour:
   dashColdawn: 0.5
   dashDistance: 250
   anime: {fileID: 1171653873}
+  canMove: 1
 --- !u!50 &1171653871
 Rigidbody2D:
   serializedVersion: 4
@@ -4534,13 +4535,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df74e18ac96a2d48a4b6e08bdf48602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcDialogue: 
   TGUI: {fileID: 1615318501}
   lines:
   - fuck you ma man
   - whats up broski
   - ' very coal '
+  speed: 0.3
   panel: {fileID: 34827810}
+  isTyping: 0
+  playerMovement: {fileID: 1171653870}
 --- !u!61 &1235014146
 BoxCollider2D:
   m_ObjectHideFlags: 0

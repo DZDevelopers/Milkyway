@@ -22,6 +22,7 @@ public class Movement : MonoBehaviour
     private bool isGrounded;
     private bool isFalling;
     private float timeInAir;
+    public bool canMove = true;
 
 
     void Start()
@@ -32,6 +33,10 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+        if (!canMove)
+        {
+            return;
+        }
         if (Input.GetButtonDown("Jump"))
         {
             jumpBufferCounter = jumpBufferTime;

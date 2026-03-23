@@ -1,5 +1,4 @@
 using UnityEngine;
-using Unity;
 using System.Collections;
 using TMPro;
 using System;
@@ -7,11 +6,14 @@ using System;
 public class InteractableNPC : MonoBehaviour
 {
     private bool PlayerInRange = false;
-    public TextMeshProUGUI TGUI;
-    public string[] lines;
+    [SerializeField] private TextMeshProUGUI TGUI;
+    [SerializeField] private string[] lines;
     private int index = 0;
-    private float speed = 0.3f;
-    public GameObject panel;
+    [SerializeField] private float speed = 0.3f;
+    [SerializeField] private GameObject panel;
+    public bool isTyping;
+    private Coroutine typingCoroutine;
+    [SerializeField] private Movement playerMovement;
 
     void Awake()
     {
@@ -24,33 +26,70 @@ public class InteractableNPC : MonoBehaviour
     }
     public void Interact()
     {
-        if (PlayerInRange && Input.GetKeyDown(KeyCode.E))
+        if (PlayerInRange && Input.GetKeyDown(KeyCode.E) && !panel.activeSelf)
         {
             panel.SetActive(true);
             StartDia();
         }
+        if (panel.activeSelf && Input.GetKeyDown(KeyCode.Space))
+        {
+            NewDia();
+        }
+
     }
     void StartDia()
     {
         index = 0;
-        StartCoroutine(TypeLine());
+        TGUI.text = "";
+        StartTyping();
+        playerMovement.canMove = false;
     }
     void NewDia()
     {
+        if (isTyping)
+        {
+           if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+            }
+
+            TGUI.text = lines[index];
+            isTyping = false;
+            return; 
+        }
         if (index < lines.Length - 1)
         {
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+            }
             index++;
             TGUI.text = String.Empty;
-            StartCoroutine(TypeLine());
+            StartTyping();
+        }
+        else
+        {
+            panel.SetActive(false);
+            playerMovement.canMove = true;
         }
     }
     IEnumerator TypeLine()
     {
-        foreach (char c in lines[index].ToCharArray())
+        isTyping = true;
+        foreach (char c in lines[index])
         {
             TGUI.text += c;
             yield return new WaitForSeconds(speed);
         }
+        isTyping = false;
+    }
+    void StartTyping()
+    {
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+        }
+        typingCoroutine = StartCoroutine(TypeLine());
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -64,6 +103,8 @@ public class InteractableNPC : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             PlayerInRange = false;
+            panel.SetActive(false);
+            playerMovement.canMove = true;
         }
     }
 }
