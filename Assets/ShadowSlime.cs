@@ -98,4 +98,8 @@ public class ShadowSlime : MonoBehaviour
     }
     rb.velocity = new Vector2(aggroSpeed * playerDir, rb.velocity.y);
     }
+    void Die()
+    {
+        
+    }
 }
