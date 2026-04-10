@@ -8,14 +8,14 @@ public class Fighting : MonoBehaviour
     public BoxCollider2D hitBox;
     [SerializeField] private Animator anime;
     [SerializeField] private LayerMask enemyLayer;
-    public int playerHealth = 100;
+    public int playerHealth = 5;
     private bool playerDead = false;
 
     // Start is called before the first frame update
     void Start()
     {
         attackBox.enabled = false; 
-        playerHealth = 100;
+        playerHealth = 5;
 
     }
 

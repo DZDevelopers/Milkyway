@@ -110,6 +110,7 @@ public class Movement : MonoBehaviour
     }
     void Dash()
     {
+        if (isCrouching) return;
         if (Input.GetKeyDown(KeyCode.LeftShift) && dashColdawnCounter <= 0)
         {
             anime.SetBool("IsDashing", true);
